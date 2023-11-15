@@ -14,14 +14,15 @@ cursor.execute('''
         atk INTEGER,
         def INTEGER,
         hp INTEGER,
-        move1 INTEGER,
-        move2 INTEGER,
-        move3 INTEGER,
-        move4 INTEGER,
-        FOREIGN KEY(move1) REFERENCES Moves(move_id),
-        FOREIGN KEY(move2) REFERENCES Moves(move_id),
-        FOREIGN KEY(move3) REFERENCES Moves(move_id),
-        FOREIGN KEY(move4) REFERENCES Moves(move_id)
+        sp_atk INTEGER,
+        sp_def INTEGER,
+        speed INTEGER,
+        type1 VARCHAR(255),
+        type2 VARCHAR(255),
+        evolution INTEGER,
+        pre_evolution INTEGER,
+        FOREIGN KEY(evolution) REFERENCES Pokemon(pokemon_id),
+        FOREIGN KEY(pre_evolution) REFERENCES Pokemon(pokemon_id)
     );
     ''')
 
@@ -44,13 +45,10 @@ cursor.execute('''
     );
     ''')
 
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Moves(
-        move_id INTEGER PRIMARY KEY,
-        name VARCHAR(255),
-        type VARCHAR(255),
-        power INTEGER,
-        accuracy INTEGER,
-        pp INTEGER
-    );
-    ''')
+for pokemon in data:
+    cursor.execute(f'''
+        INSERT INTO Pokemon(pokemon_id, name, atk, def, hp, sp_atk, sp_def, speed, type1, type2, evolution, pre_evolution)
+        VALUES(? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?);
+        ''', (pokemon['id'], pokemon['name'], pokemon['stats']['attack'], pokemon['stats']['defense'], pokemon['stats']['HP'], pokemon['stats']['special_attack'], pokemon['stats']['special_defense'], pokemon['stats']['speed'], pokemon['apiTypes'][0]['name'], pokemon['apiTypes'][1]['name'] if len(pokemon['apiTypes']) > 1 else None, pokemon['apiEvolutions'][0]['pokedexId'] if len('apiEvolutions') == 1 else None, pokemon['apiPreEvolution'][0]['pokedexIdd'] if len('apiPreEvolution') == 1 else None))
+    
+db.commit()
