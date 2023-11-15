@@ -52,15 +52,19 @@ for pokemon in data:
         VALUES(? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?);
         ''', (pokemon['id'], pokemon['name'], pokemon['stats']['attack'], pokemon['stats']['defense'], pokemon['stats']['HP'], pokemon['stats']['special_attack'], pokemon['stats']['special_defense'], pokemon['stats']['speed'], pokemon['apiTypes'][0]['name'], pokemon['apiTypes'][1]['name'] if len(pokemon['apiTypes']) > 1 else None, pokemon['apiEvolutions'][0]['pokedexId'] if len('apiEvolutions') == 1 else None, pokemon['apiPreEvolution'][0]['pokedexIdd'] if len('apiPreEvolution') == 1 else None))
     
-# List of trainers (including Ash, Blue, May, Silver, Serena and Marnie) with randomly generated pokemons,;
-
 trainer_list = [
-    {'name': 'Ash', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
-    {'name': 'Blue', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
-    {'name': 'Marnie', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
-    {'name': 'May', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
-    {'name': 'Serena', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
-    {'name': 'Silver', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)}
+    {'trainer_id': 1, 'name': 'Ash', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
+    {'trainer_id': 2, 'name': 'Blue', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
+    {'trainer_id': 3, 'name': 'Marnie', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
+    {'trainer_id': 4, 'name': 'May', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
+    {'trainer_id': 5, 'name': 'Serena', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
+    {'trainer_id': 6, 'name': 'Silver', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)}
 ]
 
+for trainer in trainer_list:
+    cursor.execute(f'''
+        INSERT INTO Trainer(trainer_id, name, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6)
+        VALUES(? ,? ,? ,? ,? ,? ,? ,?);
+        ''', (trainer['trainer_id'], trainer['name'], trainer['pokemon1'], trainer['pokemon2'], trainer['pokemon3'], trainer['pokemon4'], trainer['pokemon5'], trainer['pokemon6']))
+    
 db.commit()
