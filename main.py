@@ -13,7 +13,15 @@ cursor.execute('''
         name VARCHAR(255),
         atk INTEGER,
         def INTEGER,
-        hp INTEGER
+        hp INTEGER,
+        move1 INTEGER,
+        move2 INTEGER,
+        move3 INTEGER,
+        move4 INTEGER,
+        FOREIGN KEY(move1) REFERENCES Moves(move_id),
+        FOREIGN KEY(move2) REFERENCES Moves(move_id),
+        FOREIGN KEY(move3) REFERENCES Moves(move_id),
+        FOREIGN KEY(move4) REFERENCES Moves(move_id)
     );
     ''')
 
@@ -33,5 +41,16 @@ cursor.execute('''
         FOREIGN KEY(pokemon4) REFERENCES Pokemon(pokemon_id),
         FOREIGN KEY(pokemon5) REFERENCES Pokemon(pokemon_id),
         FOREIGN KEY(pokemon6) REFERENCES Pokemon(pokemon_id)
+    );
+    ''')
+
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Moves(
+        move_id INTEGER PRIMARY KEY,
+        name VARCHAR(255),
+        type VARCHAR(255),
+        power INTEGER,
+        accuracy INTEGER,
+        pp INTEGER
     );
     ''')
