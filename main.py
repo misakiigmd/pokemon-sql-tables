@@ -79,4 +79,22 @@ def search_trainer(query):
         ''')
     return cursor.fetchall()
 
+def print_pokemon(pokemon):
+    print(f'''
+        Pokemon ID: {pokemon[0][0]}
+        Name: {pokemon[0][1]}
+        Attack: {pokemon[0][2]}
+        Defense: {pokemon[0][3]}
+        HP: {pokemon[0][4]}
+        Special Attack: {pokemon[0][5]}
+        Special Defense: {pokemon[0][6]}
+        Speed: {pokemon[0][7]}
+        Type 1: {pokemon[0][8]}
+        Type 2: {pokemon[0][9]}
+        Evolution: {pokemon[0][10]}
+        Pre Evolution: {pokemon[0][11]}
+        ''')
+
+print_pokemon(search_pokemon('Pikachu'))
+
 db.commit()
