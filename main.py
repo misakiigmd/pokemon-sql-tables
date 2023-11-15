@@ -66,5 +66,17 @@ for trainer in trainer_list:
         INSERT INTO Trainer(trainer_id, name, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6)
         VALUES(? ,? ,? ,? ,? ,? ,? ,?);
         ''', (trainer['trainer_id'], trainer['name'], trainer['pokemon1'], trainer['pokemon2'], trainer['pokemon3'], trainer['pokemon4'], trainer['pokemon5'], trainer['pokemon6']))
-    
+
+def search_pokemon(query):
+    cursor.execute(f'''
+        SELECT * FROM Pokemon WHERE name LIKE '%{query}%';
+        ''')
+    return cursor.fetchall()
+
+def search_trainer(query):
+    cursor.execute(f'''
+        SELECT * FROM Trainer WHERE name LIKE '%{query}%';
+        ''')
+    return cursor.fetchall()
+
 db.commit()
