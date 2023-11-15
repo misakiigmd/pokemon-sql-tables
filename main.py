@@ -1,3 +1,4 @@
+import random
 import requests
 import sqlite3
 
@@ -51,4 +52,9 @@ for pokemon in data:
         VALUES(? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?);
         ''', (pokemon['id'], pokemon['name'], pokemon['stats']['attack'], pokemon['stats']['defense'], pokemon['stats']['HP'], pokemon['stats']['special_attack'], pokemon['stats']['special_defense'], pokemon['stats']['speed'], pokemon['apiTypes'][0]['name'], pokemon['apiTypes'][1]['name'] if len(pokemon['apiTypes']) > 1 else None, pokemon['apiEvolutions'][0]['pokedexId'] if len('apiEvolutions') == 1 else None, pokemon['apiPreEvolution'][0]['pokedexIdd'] if len('apiPreEvolution') == 1 else None))
     
+# List of trainers (including Ash, Blue, May, Silver, Serena and Marnie) with randomly generated pokemons,;
+
+trainer_list = [
+    {'name': 'Ash', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
+]
 db.commit()
