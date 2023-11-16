@@ -1,4 +1,4 @@
-import random
+from random import randint
 import requests
 import sqlite3
 
@@ -29,7 +29,7 @@ cursor.execute('''
 
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS Trainer(
-        trainer_id INTEGER PRIMARY KEY,
+        trainer_id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(255),
         pokemon1 INTEGER,
         pokemon2 INTEGER,
@@ -55,19 +55,19 @@ for pokemon in data:
         ''', (pokemon['id'], pokemon['name'], pokemon['stats']['attack'], pokemon['stats']['defense'], pokemon['stats']['HP'], pokemon['stats']['special_attack'], pokemon['stats']['special_defense'], pokemon['stats']['speed'], pokemon['apiTypes'][0]['name'], pokemon['apiTypes'][1]['name'] if len(pokemon['apiTypes']) > 1 else None, evo, pre_evo))
     
 trainer_list = [
-    {'trainer_id': 1, 'name': 'Ash', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
-    {'trainer_id': 2, 'name': 'Blue', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
-    {'trainer_id': 3, 'name': 'Marnie', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
-    {'trainer_id': 4, 'name': 'May', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
-    {'trainer_id': 5, 'name': 'Serena', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
-    {'trainer_id': 6, 'name': 'Silver', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)}
+    {'name': 'Ash', 'pokemon1': randint(1, 898), 'pokemon2': randint(1, 898), 'pokemon3': randint(1, 898), 'pokemon4': randint(1, 898), 'pokemon5': randint(1, 898), 'pokemon6': randint(1, 898)},
+    {'name': 'Blue', 'pokemon1': randint(1, 898), 'pokemon2': randint(1, 898), 'pokemon3': randint(1, 898), 'pokemon4': randint(1, 898), 'pokemon5': randint(1, 898), 'pokemon6': randint(1, 898)},
+    {'name': 'Marnie', 'pokemon1': randint(1, 898), 'pokemon2': randint(1, 898), 'pokemon3': randint(1, 898), 'pokemon4': randint(1, 898), 'pokemon5': randint(1, 898), 'pokemon6': randint(1, 898)},
+    {'name': 'May', 'pokemon1': randint(1, 898), 'pokemon2': randint(1, 898), 'pokemon3': randint(1, 898), 'pokemon4': randint(1, 898), 'pokemon5': randint(1, 898), 'pokemon6': randint(1, 898)},
+    {'name': 'Serena', 'pokemon1': randint(1, 898), 'pokemon2': randint(1, 898), 'pokemon3': randint(1, 898), 'pokemon4': randint(1, 898), 'pokemon5': randint(1, 898), 'pokemon6': randint(1, 898)},
+    {'name': 'Silver', 'pokemon1': randint(1, 898), 'pokemon2': randint(1, 898), 'pokemon3': randint(1, 898), 'pokemon4': randint(1, 898), 'pokemon5': randint(1, 898), 'pokemon6': randint(1, 898)}
 ]
 
 for trainer in trainer_list:
     cursor.execute(f'''
-        INSERT INTO Trainer(trainer_id, name, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6)
-        VALUES(? ,? ,? ,? ,? ,? ,? ,?);
-        ''', (trainer['trainer_id'], trainer['name'], trainer['pokemon1'], trainer['pokemon2'], trainer['pokemon3'], trainer['pokemon4'], trainer['pokemon5'], trainer['pokemon6']))
+        INSERT INTO Trainer(name, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6)
+        VALUES(? ,? ,? ,? ,? ,? ,?);
+        ''', (trainer['name'], trainer['pokemon1'], trainer['pokemon2'], trainer['pokemon3'], trainer['pokemon4'], trainer['pokemon5'], trainer['pokemon6']))
 
 db.commit()
 
@@ -76,22 +76,6 @@ def search_pokemon(query):
         SELECT * FROM Pokemon WHERE name LIKE '%{query}%';
         ''')
     return cursor.fetchall()
-
-    # pokemon = cursor.fetchall()
-    # print(f'''
-    # Pokemon ID: {pokemon[0][0]}
-    # Name: {pokemon[0][1]}
-    # Attack: {pokemon[0][2]}
-    # Defense: {pokemon[0][3]}
-    # HP: {pokemon[0][4]}
-    # Special Attack: {pokemon[0][5]}
-    # Special Defense: {pokemon[0][6]}
-    # Speed: {pokemon[0][7]}
-    # Type 1: {pokemon[0][8]}
-    # Type 2: {pokemon[0][9]}
-    # Evolution: {pokemon[0][10]} (Pokémon ID)
-    # Pre Evolution: {pokemon[0][11]}
-    # ''')
 
 def search_trainer(query):
     cursor.execute(f'''
@@ -138,7 +122,7 @@ def search_pokemon():
     else: 
         for r in range(len(result)) : 
             print(f'{r}: {result[r][1]}')
-        query = int(input("What pokémon are you looking for? [int]: "))
+        query = int(input("What pokémon are you looking for? (int): "))
         result = result[query]
     evo = get_pokemon_by_id(result[10])
     pre_evo = get_pokemon_by_id(result[11])
@@ -156,11 +140,37 @@ def search_pokemon():
     Pre-evolution: {pre_evo[1] if pre_evo else None}
     ''')
 
-# def new_trainer():
-#     name = input("Enter your name: ")
-#     pokemon1 = input("Enter your first pokemon: ")
-#     pokemon2 = input("Enter your second pokemon: ")
-#     pokemon3 = input("Enter your third pokemon: ")
-#     pokemon4 = input("Enter your fourth pokemon: ")
-#     pokemon5 = input("Enter your fifth pokemon: ")
-#     pokemon6 = input("Enter your sixth pokemon: ")
+def search_trainer(): 
+    query = input('Enter a trainer: ')
+    result = cursor.execute(f"SELECT * FROM trainer WHERE name LIKE '%{query}%'")
+    result = result.fetchall()
+    if len(result) == 0:
+        print("aucun résultat")
+    elif len(result) == 1:
+        result = result[0]
+    else: 
+        for r in range(len(result)): 
+            print(f'{r}: {result[r][1]}')
+        query = int(input("What trainer are you looking for? (int): "))
+        result = result[query]
+    
+    print(f"""
+    Name: {result[1]}
+    Pokémon 1: {get_pokemon_by_id(result[2])[1]}
+    Pokémon 2: {get_pokemon_by_id(result[3])[1]}
+    Pokémon 3: {get_pokemon_by_id(result[4])[1]}
+    Pokémon 4: {get_pokemon_by_id(result[5])[1]}
+    Pokémon 5: {get_pokemon_by_id(result[6])[1]}
+    Pokémon 6: {get_pokemon_by_id(result[7])[1]}
+    """)
+
+def new_trainer():
+    name = input("Enter your name: ")
+    pokemons = [randint(1, 898) for i in range(6)]
+    cursor.execute(f'''
+        INSERT INTO Trainer(name, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6)
+        VALUES(? ,? ,? ,? ,? ,? ,?);
+        ''', (name, pokemons[0], pokemons[1], pokemons[2], pokemons[3], pokemons[4], pokemons[5]))
+    db.commit()
+    
+new_trainer()
