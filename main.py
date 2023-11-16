@@ -70,30 +70,6 @@ for trainer in trainer_list:
         ''', (trainer['name'], trainer['pokemon1'], trainer['pokemon2'], trainer['pokemon3'], trainer['pokemon4'], trainer['pokemon5'], trainer['pokemon6']))
 
 db.commit()
-
-def search_pokemon(query):
-    cursor.execute(f'''
-        SELECT * FROM Pokemon WHERE name LIKE '%{query}%';
-        ''')
-    return cursor.fetchall()
-
-def search_trainer(query):
-    cursor.execute(f'''
-        SELECT * FROM Trainer WHERE name LIKE '%{query}%';
-        ''')
-    return cursor.fetchall()
-    
-    # trainer = cursor.fetchall()
-    # print(f'''
-    # Trainer ID: {trainer[0][0]}
-    # Name: {trainer[0][1]}
-    # Pokemon 1: {trainer[0][2]}
-    # Pokemon 2: {trainer[0][3]}
-    # Pokemon 3: {trainer[0][4]}
-    # Pokemon 4: {trainer[0][5]}
-    # Pokemon 5: {trainer[0][6]}
-    # Pokemon 6: {trainer[0][7]}
-    # ''')
     
 def get_pokemon_by_id(pokemon_id):
     cursor.execute('SELECT * FROM Pokemon WHERE pokemon_id = ?', (pokemon_id,))
@@ -104,11 +80,6 @@ def get_trainer_by_id(query):
         SELECT * FROM Trainer WHERE trainer_id = {query};
         ''')
     return cursor.fetchone()
-
-search_pokemon('Pikachu')
-search_trainer('Ash')
-get_pokemon_by_id(25)
-get_trainer_by_id(1)
 
 def search_pokemon():
     query = input("Enter a pokémon to search for: ")
