@@ -73,37 +73,41 @@ def search_pokemon(query):
     cursor.execute(f'''
         SELECT * FROM Pokemon WHERE name LIKE '%{query}%';
         ''')
-    pokemon = cursor.fetchall()
-    print(f'''
-    Pokemon ID: {pokemon[0][0]}
-    Name: {pokemon[0][1]}
-    Attack: {pokemon[0][2]}
-    Defense: {pokemon[0][3]}
-    HP: {pokemon[0][4]}
-    Special Attack: {pokemon[0][5]}
-    Special Defense: {pokemon[0][6]}
-    Speed: {pokemon[0][7]}
-    Type 1: {pokemon[0][8]}
-    Type 2: {pokemon[0][9]}
-    Evolution: {pokemon[0][10]}
-    Pre Evolution: {pokemon[0][11]}
-    ''')
+    return cursor.fetchall()
+
+    # pokemon = cursor.fetchall()
+    # print(f'''
+    # Pokemon ID: {pokemon[0][0]}
+    # Name: {pokemon[0][1]}
+    # Attack: {pokemon[0][2]}
+    # Defense: {pokemon[0][3]}
+    # HP: {pokemon[0][4]}
+    # Special Attack: {pokemon[0][5]}
+    # Special Defense: {pokemon[0][6]}
+    # Speed: {pokemon[0][7]}
+    # Type 1: {pokemon[0][8]}
+    # Type 2: {pokemon[0][9]}
+    # Evolution: {pokemon[0][10]}
+    # Pre Evolution: {pokemon[0][11]}
+    # ''')
 
 def search_trainer(query):
     cursor.execute(f'''
         SELECT * FROM Trainer WHERE name LIKE '%{query}%';
         ''')
-    trainer = cursor.fetchall()
-    print(f'''
-    Trainer ID: {trainer[0][0]}
-    Name: {trainer[0][1]}
-    Pokemon 1: {trainer[0][2]}
-    Pokemon 2: {trainer[0][3]}
-    Pokemon 3: {trainer[0][4]}
-    Pokemon 4: {trainer[0][5]}
-    Pokemon 5: {trainer[0][6]}
-    Pokemon 6: {trainer[0][7]}
-    ''')
+    return cursor.fetchall()
+
+    # trainer = cursor.fetchall()
+    # print(f'''
+    # Trainer ID: {trainer[0][0]}
+    # Name: {trainer[0][1]}
+    # Pokemon 1: {trainer[0][2]}
+    # Pokemon 2: {trainer[0][3]}
+    # Pokemon 3: {trainer[0][4]}
+    # Pokemon 4: {trainer[0][5]}
+    # Pokemon 5: {trainer[0][6]}
+    # Pokemon 6: {trainer[0][7]}
+    # ''')
     
 def get_name_from_id(query):
     cursor.execute(f'''
