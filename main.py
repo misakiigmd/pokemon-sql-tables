@@ -144,4 +144,14 @@ def new_trainer():
         ''', (name, pokemons[0], pokemons[1], pokemons[2], pokemons[3], pokemons[4], pokemons[5]))
     db.commit()
     
+def search():
+    query = input("What do you want to search for? (pokemon/trainer): ")
+    if query.lower() == "pokemon" or query.lower() == "pokémon":
+        search_pokemon()
+    elif query.lower() == "trainer":
+        search_trainer()
+    else:
+        print("Invalid input.")
+        search()
+        
 new_trainer()
