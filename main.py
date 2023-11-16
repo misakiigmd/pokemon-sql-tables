@@ -75,12 +75,6 @@ def get_pokemon_by_id(pokemon_id):
     cursor.execute('SELECT * FROM Pokemon WHERE pokemon_id = ?', (pokemon_id,))
     return cursor.fetchone()
 
-def get_trainer_by_id(query):
-    cursor.execute(f'''
-        SELECT * FROM Trainer WHERE trainer_id = {query};
-        ''')
-    return cursor.fetchone()
-
 def search_pokemon():
     query = input("Enter a pokémon to search for: ")
     result = cursor.execute(f"SELECT * FROM Pokemon WHERE name LIKE '%{query}%'")
@@ -111,6 +105,12 @@ def search_pokemon():
     Pre-evolution: {pre_evo[1] if pre_evo else None}
     ''')
 
+def get_trainer_by_id(query):
+    cursor.execute(f'''
+        SELECT * FROM Trainer WHERE trainer_id = {query};
+        ''')
+    return list(cursor.fetchone())
+
 def search_trainer(): 
     query = input('Enter a trainer: ')
     result = cursor.execute(f"SELECT * FROM trainer WHERE name LIKE '%{query}%'")
@@ -134,7 +134,7 @@ def search_trainer():
     Pokémon 5: {get_pokemon_by_id(result[6])[1]}
     Pokémon 6: {get_pokemon_by_id(result[7])[1]}
     """)
-
+    
 def new_trainer():
     name = input("Enter your name: ")
     pokemons = [randint(1, 898) for i in range(6)]
@@ -154,4 +154,34 @@ def search():
         print("Invalid input.")
         search()
         
-new_trainer()
+def calculate_damage(attacker, defender):
+    damage = (50 * attacker[2] * randint(1, 101) / 100) / defender[3]
+    return int(damage)
+
+def fight():
+    trainer1 = get_trainer_by_id(int(input("Enter the ID of the first trainer: ")))
+    trainer2 = get_trainer_by_id(int(input("Enter the ID of the second trainer: ")))
+    pokemon1 = get_pokemon_by_id(trainer1[2])
+    pokemon2 = get_pokemon_by_id(trainer2[2])
+    print(f"{trainer1[1]} VS {trainer2[1]}")
+    while trainer1[2] > 0 and trainer2[2] > 0:
+        print(f"{pokemon1[1]} attacks {pokemon2[1]}")
+        damage = calculate_damage(get_pokemon_by_id(trainer1[2]), get_pokemon_by_id(trainer2[2]))
+        print(f"{pokemon2[1]} loses {damage} HP")
+        trainer2[2] -= damage
+        if trainer2[2] <= 0:
+            print(f"{pokemon2[1]} is knocked out.")
+            break
+        print(f"{pokemon2[1]} attacks {pokemon1[1]}")
+        damage = calculate_damage(get_pokemon_by_id(trainer2[2]), get_pokemon_by_id(trainer1[2]))
+        print(f"{pokemon1[1]} loses {damage} HP")
+        trainer1[2] -= damage
+        if trainer1[2] <= 0:
+            print(f"{pokemon1[1]} is knocked out.")
+            break
+    if trainer1[2] > trainer2[2]:
+        print(f"{trainer1[1]} wins!")
+    elif trainer2[2] > trainer1[2]:
+        print(f"{trainer2[1]} wins!")
+        
+fight()
