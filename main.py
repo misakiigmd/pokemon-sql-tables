@@ -47,10 +47,12 @@ cursor.execute('''
     ''')
 
 for pokemon in data:
+    evo = pokemon['apiEvolutions'][0]['pokedexId'] if len(pokemon['apiEvolutions']) == 1 else None
+    pre_evo = pokemon['apiPreEvolution']['pokedexIdd'] if len(pokemon['apiPreEvolution']) == 2 else None 
     cursor.execute(f'''
         INSERT INTO Pokemon(pokemon_id, name, atk, def, hp, sp_atk, sp_def, speed, type1, type2, evolution, pre_evolution)
         VALUES(? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?);
-        ''', (pokemon['id'], pokemon['name'], pokemon['stats']['attack'], pokemon['stats']['defense'], pokemon['stats']['HP'], pokemon['stats']['special_attack'], pokemon['stats']['special_defense'], pokemon['stats']['speed'], pokemon['apiTypes'][0]['name'], pokemon['apiTypes'][1]['name'] if len(pokemon['apiTypes']) > 1 else None, pokemon['apiEvolutions'][0]['pokedexId'] if len('apiEvolutions') == 1 else None, pokemon['apiPreEvolution'][0]['pokedexIdd'] if len('apiPreEvolution') == 1 else None))
+        ''', (pokemon['id'], pokemon['name'], pokemon['stats']['attack'], pokemon['stats']['defense'], pokemon['stats']['HP'], pokemon['stats']['special_attack'], pokemon['stats']['special_defense'], pokemon['stats']['speed'], pokemon['apiTypes'][0]['name'], pokemon['apiTypes'][1]['name'] if len(pokemon['apiTypes']) > 1 else None, evo, pre_evo))
     
 trainer_list = [
     {'trainer_id': 1, 'name': 'Ash', 'pokemon1': random.randint(1, 898), 'pokemon2': random.randint(1, 898), 'pokemon3': random.randint(1, 898), 'pokemon4': random.randint(1, 898), 'pokemon5': random.randint(1, 898), 'pokemon6': random.randint(1, 898)},
