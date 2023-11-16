@@ -69,6 +69,8 @@ for trainer in trainer_list:
         VALUES(? ,? ,? ,? ,? ,? ,? ,?);
         ''', (trainer['trainer_id'], trainer['name'], trainer['pokemon1'], trainer['pokemon2'], trainer['pokemon3'], trainer['pokemon4'], trainer['pokemon5'], trainer['pokemon6']))
 
+db.commit()
+
 def search_pokemon(query):
     cursor.execute(f'''
         SELECT * FROM Pokemon WHERE name LIKE '%{query}%';
@@ -87,7 +89,7 @@ def search_pokemon(query):
     # Speed: {pokemon[0][7]}
     # Type 1: {pokemon[0][8]}
     # Type 2: {pokemon[0][9]}
-    # Evolution: {pokemon[0][10]}
+    # Evolution: {pokemon[0][10]} (Pokémon ID)
     # Pre Evolution: {pokemon[0][11]}
     # ''')
 
@@ -124,5 +126,41 @@ search_trainer('Ash')
 get_pokemon_by_id(25)
 get_trainer_by_id(1)
 
-db.commit()
-db.close()
+def search_pokemon():
+    query = input("Enter a pokémon to search for: ")
+    result = cursor.execute(f"SELECT * FROM Pokemon WHERE name LIKE '%{query}%'")
+    result = result.fetchall()
+    if len(result) == 0:
+        print("No result.")
+        search_pokemon()
+    elif len(result) == 1:
+        result = result[0]
+    else: 
+        for r in range(len(result)) : 
+            print(f'{r}: {result[r][1]}')
+        query = int(input("What pokémon are you looking for? [int]: "))
+        result = result[query]
+    evo = get_pokemon_by_id(result[10])
+    pre_evo = get_pokemon_by_id(result[11])
+    print(f'''
+    Pokédex ID: {result[0]}
+    Name: {result[1]}
+    Attack: {result[2]}
+    Defense: {result[3]}
+    HP: {result[4]}
+    Special Attack: {result[5]}
+    Special Defense: {result[6]}
+    Speed: {result[7]}
+    Type(s): {result[8]}, {result[9]}
+    Evolution: {evo[1] if evo else None}
+    Pre-evolution: {pre_evo[1] if pre_evo else None}
+    ''')
+
+# def new_trainer():
+#     name = input("Enter your name: ")
+#     pokemon1 = input("Enter your first pokemon: ")
+#     pokemon2 = input("Enter your second pokemon: ")
+#     pokemon3 = input("Enter your third pokemon: ")
+#     pokemon4 = input("Enter your fourth pokemon: ")
+#     pokemon5 = input("Enter your fifth pokemon: ")
+#     pokemon6 = input("Enter your sixth pokemon: ")
