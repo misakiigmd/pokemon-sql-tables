@@ -96,7 +96,7 @@ def search_trainer(query):
         SELECT * FROM Trainer WHERE name LIKE '%{query}%';
         ''')
     return cursor.fetchall()
-
+    
     # trainer = cursor.fetchall()
     # print(f'''
     # Trainer ID: {trainer[0][0]}
