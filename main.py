@@ -104,8 +104,15 @@ def search_trainer(query):
     Pokemon 5: {trainer[0][6]}
     Pokemon 6: {trainer[0][7]}
     ''')
+    
+def get_name_from_id(query):
+    cursor.execute(f'''
+        SELECT * FROM Pokemon WHERE pokemon_id = {query};
+        ''')
+    return cursor.fetchall()[0][1]
 
 search_pokemon('Pikachu')
 search_trainer('Ash')
+get_name_from_id(1)
 
 db.commit()
