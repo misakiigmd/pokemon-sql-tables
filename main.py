@@ -9,10 +9,7 @@ r = requests.get('https://pokebuildapi.fr/api/v1/pokemon')
 data = r.json()
 
 # Si il existe, on supprime l'ancien fichier de base de données
-try:
-    os.remove('pokemons.db')
-except:
-    pass
+os.remove('pokemons.db') if os.path.exists('pokemons.db') else None
 
 # On crée deux tables dans la base de données, une pour les pokémons et une pour les dresseurs
 db = sqlite3.connect('pokemons.db')
