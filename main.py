@@ -98,9 +98,10 @@ def search_pokemon():
     elif len(result) == 1:
         result = result[0]
     else: 
+        print('\nRésultats:')
         for r in range(len(result)) : 
             print(f'{r}: {result[r][1]}')
-        query = int(input("Entrez le numéro du Pokémon que vous cherchez (int): "))
+        query = int(input("\nEntrez le numéro du Pokémon que vous cherchez (int): "))
         result = result[query]
     evo = get_pokemon_by_id(result[10])
     pre_evo = get_pokemon_by_id(result[11])
@@ -115,8 +116,7 @@ def search_pokemon():
     Vitesse: {result[7]}
     Type(s): {result[8]}, {result[9]}
     Evolution: {evo[1] if evo else None}
-    Pre-evolution: {pre_evo[1] if pre_evo else None}
-    ''')
+    Pre-evolution: {pre_evo[1] if pre_evo else None}''')
 
 # Fonction pour récupérer un dresseur à partir de son ID
 def get_trainer_by_id(query):
@@ -147,8 +147,7 @@ def search_trainer():
     Pokémon 3: {get_pokemon_by_id(result[4])[1]}
     Pokémon 4: {get_pokemon_by_id(result[5])[1]}
     Pokémon 5: {get_pokemon_by_id(result[6])[1]}
-    Pokémon 6: {get_pokemon_by_id(result[7])[1]}
-    """)
+    Pokémon 6: {get_pokemon_by_id(result[7])[1]}""")
     
 # Fonction pour créer un nouveau dresseur
 def new_trainer():
@@ -164,9 +163,9 @@ def new_trainer():
 # Fonction pour chercher un pokémon ou un dresseur
 def search():
     query = input("Que cherchez-vous? (pokemon/dresseur): ")
-    if query.lower() == "pokemon" or query.lower() == "pokémon":
+    if query[0].lower() == "p":
         search_pokemon()
-    elif query.lower() == "dresseur":
+    elif query[0].lower() == "d":
         search_trainer()
     else:
         print("Entrée invalide.")
