@@ -18,7 +18,7 @@ cursor = db.cursor()
 
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS Pokemon(
-        pokemon_id INTEGER PRIMARY KEY,
+        pokemon_id INTEGER PRIMARY KEY AUTOINCREMENT,
         name VARCHAR(255),
         attack INTEGER,
         defense INTEGER,
@@ -59,9 +59,9 @@ for pokemon in data:
     evo = pokemon['apiEvolutions'][0]['pokedexId'] if len(pokemon['apiEvolutions']) == 1 else None
     pre_evo = pokemon['apiPreEvolution']['pokedexIdd'] if len(pokemon['apiPreEvolution']) == 2 else None 
     cursor.execute(f'''
-        INSERT INTO Pokemon(pokemon_id, name, attack, defense, hp, special_attack, special_defense, speed, type1, type2, evolution, pre_evolution)
-        VALUES(? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?);
-        ''', (pokemon['id'], pokemon['name'], pokemon['stats']['attack'], pokemon['stats']['defense'], pokemon['stats']['HP'], pokemon['stats']['special_attack'], pokemon['stats']['special_defense'], pokemon['stats']['speed'], pokemon['apiTypes'][0]['name'], pokemon['apiTypes'][1]['name'] if len(pokemon['apiTypes']) > 1 else None, evo, pre_evo))
+        INSERT INTO Pokemon(name, attack, defense, hp, special_attack, special_defense, speed, type1, type2, evolution, pre_evolution)
+        VALUES(? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?);
+        ''', (pokemon['name'], pokemon['stats']['attack'], pokemon['stats']['defense'], pokemon['stats']['HP'], pokemon['stats']['special_attack'], pokemon['stats']['special_defense'], pokemon['stats']['speed'], pokemon['apiTypes'][0]['name'], pokemon['apiTypes'][1]['name'] if len(pokemon['apiTypes']) > 1 else None, evo, pre_evo))
     
 # On crée les données des dresseurs manuellement, avec des pokémons aléatoires et on les insère dans la base de données
 trainer_list = [
