@@ -196,24 +196,24 @@ def list_pokemons_by_trainer(trainer_id):
 # Fonction pour simuler un combat entre deux dresseurs et leurs pokémons
 def fight():
     list_trainers()
-    trainer1 = get_trainer_by_id(int(input("Entrez l'ID du premier dresseur: ")))
+    trainer1 = get_trainer_by_id(int(input("\nEntrez l'ID du premier dresseur: ")))
     trainer2 = get_trainer_by_id(int(input("Entrez l'ID du second dresseur: ")))
     list_pokemons_by_trainer(trainer1[0])
-    pokemon1 = get_pokemon_by_id(int(input("Entrez l'ID du premier Pokémon: ")))
+    pokemon1 = get_pokemon_by_id(int(input("\nEntrez l'ID du premier Pokémon: ")))
     list_pokemons_by_trainer(trainer2[0])
-    pokemon2 = get_pokemon_by_id(int(input("Entrez l'ID du second Pokémon: ")))
+    pokemon2 = get_pokemon_by_id(int(input("\nEntrez l'ID du second Pokémon: ")))
     print(f"\n{trainer1[1]} contre {trainer2[1]}.")
     while trainer1[2] > 0 and trainer2[2] > 0:
         print(f"{pokemon1[1]} attaque {pokemon2[1]}!")
         damage = calculate_damage(get_pokemon_by_id(trainer1[2]), get_pokemon_by_id(trainer2[2]))
-        print(f"{pokemon2[1]} perd {damage} PV.")
+        input(f"{pokemon2[1]} perd {damage} PV.")
         trainer2[2] -= damage
         if trainer2[2] <= 0:
             print(f"{pokemon2[1]} est KO.")
             break
         print(f"{pokemon2[1]} attaque {pokemon1[1]}!")
         damage = calculate_damage(get_pokemon_by_id(trainer2[2]), get_pokemon_by_id(trainer1[2]))
-        print(f"{pokemon1[1]} perd {damage} PV.")
+        input(f"{pokemon1[1]} perd {damage} PV.")
         trainer1[2] -= damage
         if trainer1[2] <= 0:
             print(f"{pokemon1[1]} est KO.")
