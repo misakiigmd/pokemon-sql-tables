@@ -91,30 +91,30 @@ def get_pokemon_by_id(pokemon_id):
 
 # Fonction pour chercher un pokémon dans la base de données grâce à son nom
 def search_pokemon():
-    query = input("Enter a pokémon to search for: ")
+    query = input("Entrez le nom du Pokémon que vous cherchez: ")
     result = cursor.execute(f"SELECT * FROM Pokemon WHERE name LIKE '%{query}%'")
     result = result.fetchall()
     if len(result) == 0:
-        print("No result.")
+        print("Aucun résultat.")
         search_pokemon()
     elif len(result) == 1:
         result = result[0]
     else: 
         for r in range(len(result)) : 
             print(f'{r}: {result[r][1]}')
-        query = int(input("What pokémon are you looking for? (int): "))
+        query = int(input("Entrez le numéro du Pokémon que vous cherchez (int): "))
         result = result[query]
     evo = get_pokemon_by_id(result[10])
     pre_evo = get_pokemon_by_id(result[11])
     print(f'''
     Pokédex ID: {result[0]}
-    Name: {result[1]}
-    Attack: {result[2]}
-    Defense: {result[3]}
-    HP: {result[4]}
-    Special Attack: {result[5]}
-    Special Defense: {result[6]}
-    Speed: {result[7]}
+    Nom: {result[1]}
+    Attaque: {result[2]}
+    Défense: {result[3]}
+    PV: {result[4]}
+    Attaque Spéciale: {result[5]}
+    Défense Spéciale: {result[6]}
+    Vitesse: {result[7]}
     Type(s): {result[8]}, {result[9]}
     Evolution: {evo[1] if evo else None}
     Pre-evolution: {pre_evo[1] if pre_evo else None}
@@ -129,21 +129,21 @@ def get_trainer_by_id(query):
 
 # Fonction pour chercher un dresseur dans la base de données grâce à son nom
 def search_trainer(): 
-    query = input('Enter a trainer: ')
+    query = input("Entrez le nom d'un dresseur: ")
     result = cursor.execute(f"SELECT * FROM trainer WHERE name LIKE '%{query}%'")
     result = result.fetchall()
     if len(result) == 0:
-        print("aucun résultat")
+        print("Aucun résultat.")
     elif len(result) == 1:
         result = result[0]
     else: 
         for r in range(len(result)): 
             print(f'{r}: {result[r][1]}')
-        query = int(input("What trainer are you looking for? (int): "))
+        query = int(input("Entrez le numéro du dresseur que vous cherchez (int): "))
         result = result[query]
     
     print(f"""
-    Name: {result[1]}
+    Nom: {result[1]}
     Pokémon 1: {get_pokemon_by_id(result[2])[1]}
     Pokémon 2: {get_pokemon_by_id(result[3])[1]}
     Pokémon 3: {get_pokemon_by_id(result[4])[1]}
@@ -154,24 +154,24 @@ def search_trainer():
     
 # Fonction pour créer un nouveau dresseur
 def new_trainer():
-    name = input("Enter your name: ")
+    name = input("Entrez votre nom: ")
     pokemons = [randint(1, 898) for i in range(6)]
     cursor.execute(f'''
         INSERT INTO Trainer(name, pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6)
         VALUES(? ,? ,? ,? ,? ,? ,?);
         ''', (name, pokemons[0], pokemons[1], pokemons[2], pokemons[3], pokemons[4], pokemons[5]))
     db.commit()
-    print("Trainer created.")
+    print("La création du dresseur a été effectuée.")
     
 # Fonction pour chercher un pokémon ou un dresseur
 def search():
-    query = input("What do you want to search for? (pokemon/trainer): ")
+    query = input("Que cherchez-vous? (pokemon/dresseur): ")
     if query.lower() == "pokemon" or query.lower() == "pokémon":
         search_pokemon()
-    elif query.lower() == "trainer":
+    elif query.lower() == "dresseur":
         search_trainer()
     else:
-        print("Invalid input.")
+        print("Entrée invalide.")
         search()
         
 # Formule pour calculer les dégâts pendant les combats
@@ -183,7 +183,7 @@ def calculate_damage(attacker, defender):
 def list_trainers():
     cursor.execute('SELECT * FROM Trainer')
     trainers = cursor.fetchall()
-    print("\nTrainers:")
+    print("\nDresseurs:")
     for trainer in trainers:
         print(f"{trainer[0]}: {trainer[1]}")
     
@@ -198,38 +198,38 @@ def list_pokemons_by_trainer(trainer_id):
 # Fonction pour simuler un combat entre deux dresseurs et leurs pokémons
 def fight():
     list_trainers()
-    trainer1 = get_trainer_by_id(int(input("Enter the ID of the first trainer: ")))
-    trainer2 = get_trainer_by_id(int(input("Enter the ID of the second trainer: ")))
+    trainer1 = get_trainer_by_id(int(input("Entrez l'ID du premier dresseur: ")))
+    trainer2 = get_trainer_by_id(int(input("Entrez l'ID du second dresseur: ")))
     list_pokemons_by_trainer(trainer1[0])
-    pokemon1 = get_pokemon_by_id(int(input("Enter the ID of the first pokemon: ")))
+    pokemon1 = get_pokemon_by_id(int(input("Entrez l'ID du premier Pokémon: ")))
     list_pokemons_by_trainer(trainer2[0])
-    pokemon2 = get_pokemon_by_id(int(input("Enter the ID of the second pokemon: ")))
-    print(f"\n{trainer1[1]} VS {trainer2[1]}")
+    pokemon2 = get_pokemon_by_id(int(input("Entrez l'ID du second Pokémon: ")))
+    print(f"\n{trainer1[1]} contre {trainer2[1]}.")
     while trainer1[2] > 0 and trainer2[2] > 0:
-        print(f"{pokemon1[1]} attacks {pokemon2[1]}")
+        print(f"{pokemon1[1]} attaque {pokemon2[1]}!")
         damage = calculate_damage(get_pokemon_by_id(trainer1[2]), get_pokemon_by_id(trainer2[2]))
-        print(f"{pokemon2[1]} loses {damage} HP")
+        print(f"{pokemon2[1]} perd {damage} PV.")
         trainer2[2] -= damage
         if trainer2[2] <= 0:
-            print(f"{pokemon2[1]} is knocked out.")
+            print(f"{pokemon2[1]} est KO.")
             break
-        print(f"{pokemon2[1]} attacks {pokemon1[1]}")
+        print(f"{pokemon2[1]} attaque {pokemon1[1]}!")
         damage = calculate_damage(get_pokemon_by_id(trainer2[2]), get_pokemon_by_id(trainer1[2]))
-        print(f"{pokemon1[1]} loses {damage} HP")
+        print(f"{pokemon1[1]} perd {damage} PV.")
         trainer1[2] -= damage
         if trainer1[2] <= 0:
-            print(f"{pokemon1[1]} is knocked out.")
+            print(f"{pokemon1[1]} est KO.")
             break
     if trainer1[2] > trainer2[2]:
-        print(f"{trainer1[1]} wins!")
+        print(f"{trainer1[1]} gagne!")
     elif trainer2[2] > trainer1[2]:
-        print(f"{trainer2[1]} wins!")
+        print(f"{trainer2[1]} gagne!")
         
 # Menu principal
 if __name__ == '__main__':
     while True:
-        print("\n1. Search\n2. New trainer\n3. Fight\n4. Exit\n")
-        choice = input("What do you want to do? (int): ")
+        print("\n1. Recherche\n2. Nouveau dresseur\n3. Combat\n4. Sortie\n")
+        choice = input("Que souhaitez-vous faire? (int): ")
         if choice == '1':
             search()
         elif choice == '2':
@@ -239,4 +239,4 @@ if __name__ == '__main__':
         elif choice == '4':
             break
         else:
-            print("Invalid input.")
+            print("Entrée invalide.")
