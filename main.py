@@ -3,7 +3,6 @@ from random import randint
 import requests
 import sqlite3
 
-
 # On utilise une API pour récupérer les données des pokémons
 r = requests.get('https://pokebuildapi.fr/api/v1/pokemon')
 data = r.json()
