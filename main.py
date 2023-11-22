@@ -84,7 +84,7 @@ db.commit()
 # Fonction pour récupérer un pokémon à partir de son ID
 def get_pokemon_by_id(pokemon_id):
     cursor.execute('SELECT * FROM Pokemon WHERE pokemon_id = ?', (pokemon_id,))
-    return list(cursor.fetchone())
+    return cursor.fetchone()
 
 # Fonction pour chercher un pokémon dans la base de données grâce à son nom
 def search_pokemon():
@@ -200,25 +200,27 @@ def fight():
     pokemon1 = get_pokemon_by_id(int(input("\nEntrez l'ID du premier Pokémon: ")))
     list_pokemons_by_trainer(trainer2[0])
     pokemon2 = get_pokemon_by_id(int(input("\nEntrez l'ID du second Pokémon: ")))
+    pokemon1pv = pokemon1[4]
+    pokemon2pv = pokemon2[4]
     print(f"\n{trainer1[1]} contre {trainer2[1]}.")
-    while pokemon1[4] > 0 and pokemon2[4] > 0:
+    while pokemon1pv > 0 and pokemon2pv > 0:
         print(f"{pokemon1[1]} attaque {pokemon2[1]}!")
         damage = calculate_damage(get_pokemon_by_id(trainer1[2]), get_pokemon_by_id(trainer2[2]))
         input(f"{pokemon2[1]} perd {damage} PV.")
-        pokemon2[4] -= damage
-        if pokemon2[4] <= 0:
+        pokemon2pv -= damage
+        if pokemon2pv <= 0:
             print(f"{pokemon2[1]} est KO.")
             break
         print(f"{pokemon2[1]} attaque {pokemon1[1]}!")
         damage = calculate_damage(get_pokemon_by_id(trainer2[2]), get_pokemon_by_id(trainer1[2]))
         input(f"{pokemon1[1]} perd {damage} PV.")
-        pokemon1[4] -= damage
-        if pokemon2[4] <= 0:
+        pokemon1pv -= damage
+        if pokemon1pv <= 0:
             print(f"{pokemon1[1]} est KO.")
             break
-    if pokemon1[4] > pokemon2[4]:
+    if pokemon1pv > pokemon2pv:
         print(f"{trainer1[1]} gagne!")
-    elif trainer2[2] > trainer1[2]:
+    elif pokemon2pv > pokemon1pv:
         print(f"{trainer2[1]} gagne!")
         
 # Menu principal
